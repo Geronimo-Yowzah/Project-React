@@ -154,6 +154,21 @@
             "title":"Gauss-Seidel Gradient 4x4",
             "MA":[[5,2,1,1],[2,6,2,1],[1,2,7,1],[1,1,2,8]],
             "MB":[29,31,26,19]
+        },
+        {
+            "title":"Conjugate Gradient Gradient 2x2",
+            "MA":[[2,5],[1, 7]],
+            "MB":[13,11]
+        },
+        {
+            "title":"Conjugate Gradient Gradient 3x3",
+            "MA":[[20, 1, -2],[3,20, -1],[2, -3, 20]],
+            "MB":[17,-18,25]
+        },
+        {
+            "title":"Conjugate Gradient Gradient 4x4",
+            "MA":[[5,2,1,1],[2,6,2,1],[1,2,7,1],[1,1,2,8]],
+            "MB":[29,31,26,19]
         }
     ]
 }
