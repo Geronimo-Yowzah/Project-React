@@ -1,6 +1,5 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { LinkContainer } from 'react-router-bootstrap'
 import Head from "./Head";
 import { BrowserRouter,Route } from 'react-router-dom';
 import Bisection from "./RootEquation/Bisection";
