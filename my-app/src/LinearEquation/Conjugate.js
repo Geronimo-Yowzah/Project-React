@@ -1,4 +1,5 @@
 import { useState } from "react"
+import axios from "axios";
 import { Button, Container, Form, Table } from "react-bootstrap";
 import { evaluate, log } from 'mathjs'
 import Plot from "react-plotly.js";
@@ -6,6 +7,11 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 const math = require('mathjs');
 
 
@@ -108,6 +114,59 @@ const Conjugate =()=>{
                 })()}
             </Container>
         );
+    }
+
+    const url = 'http://localhost:3030/linearEqation';
+
+    function getEqution(){
+        axios.get(url)
+            .then((response)=>{
+                if(Sizematrix == 3){
+                    const d = response.data[25]
+                    setpopupdata(d);
+                    setMa(d.MA);
+                    setMb(d.MB);
+                    console.log(popupdata.MA.map(row => row.join(",")).join("\n"));
+                    popupdata.MA.forEach(([a, b, c], i) => {
+                        [setA11, setA12, setA13, setA21, setA22, setA23, setA31, setA32, setA33][i * 3](a);
+                        [setA11, setA12, setA13, setA21, setA22, setA23, setA31, setA32, setA33][i * 3 + 1](b);
+                        [setA11, setA12, setA13, setA21, setA22, setA23, setA31, setA32, setA33][i * 3 + 2](c);
+                    });
+                    popupdata.MB.forEach((a, i) => {
+                        [setB11, setB21, setB31][i](a);
+                    });
+                }else if(Sizematrix == 2){
+                    const d = response.data[24]
+                    setpopupdata(d);
+                    setMa(d.MA);
+                    setMb(d.MB);
+                    popupdata.MA.forEach(([a, b], i) => {
+                        [setA11, setA12, setA21, setA22][i * 2](a);
+                        [setA11, setA12, setA21, setA22][i * 2 + 1](b);
+                    });
+                    popupdata.MB.forEach((a, i) => {
+                        [setB11, setB21][i](a);
+                        
+                    });
+                }else if(Sizematrix == 4){
+                    const d = response.data[26]
+                    setpopupdata(d);
+                    setMa(d.MA);
+                    setMb(d.MB);
+                    console.log(popupdata.MA.map(row => row.join(",")).join("\n"));
+                    popupdata.MA.forEach(([a, b, c, d], i) => {
+                        [setA11, setA12, setA13, setA14, setA21, setA22, setA23, setA24, setA31, setA32, setA33, setA34, setA41, setA42, setA43,setA44][i * 4](a);
+                        [setA11, setA12, setA13, setA14, setA21, setA22, setA23, setA24, setA31, setA32, setA33, setA34, setA41, setA42, setA43,setA44][i * 4 + 1](b);
+                        [setA11, setA12, setA13, setA14, setA21, setA22, setA23, setA24, setA31, setA32, setA33, setA34, setA41, setA42, setA43,setA44][i * 4 + 2](c);
+                        [setA11, setA12, setA13, setA14, setA21, setA22, setA23, setA24, setA31, setA32, setA33, setA34, setA41, setA42, setA43,setA44][i * 4 + 3](d);
+                    });
+                    popupdata.MB.forEach((a, i) => {
+                        [setB11, setB21, setB31, setB41][i](a);
+                    });
+                }
+                
+        })
+        setOpen(true);
     }
 
     function Calconjugate(A, b, x0){
@@ -319,10 +378,15 @@ const Conjugate =()=>{
     const dataXchart = [];
     const dataErrorchart = [];
 
+    const [Ma , setMa] = useState([]);
+    const [Mb , setMb] = useState([]);
+    const [popupdata, setpopupdata] = useState([]);
+    const [open, setOpen] = useState(false);
     const [valueIter, setValueIter] = useState([]);
     const [ValueX, setValueX] = useState([]);
     const tofixedValueX = ValueX.map(v => v.toFixed(4));
     const formattedValueX = tofixedValueX.join(" , ");
+    const [checkValue,setcheckValue] = useState([]);
      
     const [html, setHtml] = useState(null);
     const [A11,setA11] = useState("");const [A12,setA12] = useState("");const [A13,setA13] = useState("");const [A14,setA14] = useState("");
@@ -337,54 +401,12 @@ const Conjugate =()=>{
         setSizematrix(event.target.value);
     };
 
-    const inputA11 = (event) =>{
-        setA11(event.target.value)
-    }
-    const inputA12 = (event) =>{
-        setA12(event.target.value)
-    }
-    const inputA13 = (event) =>{
-        setA13(event.target.value)
-    }
-    const inputA14 = (event) =>{
-        setA14(event.target.value)
-    }
-    const inputA21 = (event) =>{
-        setA21(event.target.value)
-    }
-    const inputA22 = (event) =>{
-        setA22(event.target.value)
-    }
-    const inputA23 = (event) =>{
-        setA23(event.target.value)
-    }
-    const inputA24 = (event) =>{
-        setA24(event.target.value)
-    }
-    const inputA31 = (event) =>{
-        setA31(event.target.value)
-    }
-    const inputA32 = (event) =>{
-        setA32(event.target.value)
-    }
-    const inputA33 = (event) =>{
-        setA33(event.target.value)
-    }
-    const inputA34 = (event) =>{
-        setA34(event.target.value)
-    }
-    const inputA41 = (event) =>{
-        setA41(event.target.value)
-    }
-    const inputA42 = (event) =>{
-        setA42(event.target.value)
-    }
-    const inputA43 = (event) =>{
-        setA43(event.target.value)
-    }
-    const inputA44 = (event) =>{
-        setA44(event.target.value)
-    }
+    const handleClose = () => {
+        getEqution();
+        setOpen(false);
+        
+    };
+
     const inputB11 = (event) =>{
         setB11(event.target.value)
     }
@@ -398,6 +420,14 @@ const Conjugate =()=>{
         setB41(event.target.value)
     }
 
+    function getCheck(){
+        var checkX = math.multiply(checkmatrix,ValueX);
+        // setcheckValue(checkX.map(v => v.toFixed(4)).join(" , "));
+        setcheckValue(checkX);
+    }
+
+    const [checkmatrix, setcheckmatrix] = useState([]);
+
     const calculateLinear = () =>{
         var a1 = [];
         var a2 = [];
@@ -410,6 +440,7 @@ const Conjugate =()=>{
             a2.push(parseFloat(A21),parseFloat(A22));
             b.push(parseFloat(B11),parseFloat(B21));
             A.push(a1,a2);
+            setcheckmatrix(A)
             var B = b.map(v=>[v]);
             console.log(A);
             console.log(B);
@@ -422,6 +453,7 @@ const Conjugate =()=>{
             b.push(parseFloat(B11),parseFloat(B21),parseFloat(B31));
             var B = b.map(v=>[v]);
             A.push(a1,a2,a3);
+            setcheckmatrix(A)
             var x0 = [[0], [0], [0]];
             Calconjugate(A,B,x0);
         }
@@ -432,13 +464,14 @@ const Conjugate =()=>{
             a4.push(parseFloat(A41),parseFloat(A42),parseFloat(A43),parseFloat(A44));
             b.push(parseFloat(B11),parseFloat(B21),parseFloat(B31),parseFloat(B41));
             A.push(a1,a2,a3,a4);
+            setcheckmatrix(A)
             var B = b.map(v=>[v]);
             console.log(A);
             console.log(B);
             var x0 = [[0], [0], [0], [0]];
             Calconjugate(A,B,x0);
         }
-        setHtml(print()); 
+        setHtml(print());
     }
 
     return (
@@ -465,238 +498,224 @@ const Conjugate =()=>{
                             return (
                                 <div style={{display:"flex",justifyContent:"center"}}>
                                     <div style={{paddingTop:"45px"}}><Form.Label>A = </Form.Label></div>
-                                    <div style={{display:"grid",gridTemplateColumns:"repeat(2, 1fr)"}}>
-                                        <input type="number" id="A11" 
-                                            onChange={inputA11} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A12" 
-                                            onChange={inputA12} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A21" 
-                                            onChange={inputA21} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A22" 
-                                            onChange={inputA22} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
+                                    <div>
+                                        {[1,2].map(i => (
+                                        <div key={i} style={{display:"grid",gridTemplateColumns:"repeat(2, 1fr)"}}>
+                                            {[1,2].map(j => (
+                                            <input
+                                                key={j}
+                                                type="number"
+                                                id={`A${i}${j}`}
+                                                onChange={(e) => eval(`setA${i}${j}(e.target.value)`) }
+                                                value={eval(`A${i}${j}`)}
+                                                style={{width:"65px", margin:"10px", display: "inline-block"}}
+                                                className="form-control"
+                                            />
+                                            ))}
+                                    </div>                                    
+                                    ))}
                                     </div>
                                     <div style={{paddingTop:"45px",paddingLeft:"20px"}}><Form.Label>B = </Form.Label></div>
                                     <div style={{display:"grid"}}>
                                         <input type="number" id="B11" 
                                             onChange={inputB11} 
+                                            value = {B11}
                                             style={{width:"65px", margin:"10px",display: "inline-block"}} 
                                             className="form-control">
                                         </input>
                                         <input type="number" id="B21" 
-                                            onChange={inputB21} 
+                                            onChange={inputB21}
+                                            value = {B21} 
                                             style={{width:"65px", margin:"10px",display: "inline-block"}} 
                                             className="form-control">
                                         </input>
                                     </div>
-                                    <div style={{paddingTop:"45px",paddingLeft:"20px"}}><Form.Label>Initail x1,x2 = 0 </Form.Label></div>
                                 </div>
                             )
                             } else if (Sizematrix == 3) {
                             return (
                                 <div style={{display:"flex",justifyContent:"center"}}>
                                     <div style={{paddingTop:"75px"}}><Form.Label>A = </Form.Label></div>
-                                    <div style={{display:"grid",gridTemplateColumns:"repeat(3, 1fr)"}}>
-                                        <input type="number" id="A11" 
-                                            onChange={inputA11} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A12" 
-                                            onChange={inputA12} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A13" 
-                                            onChange={inputA13} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A21" 
-                                            onChange={inputA21} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A22" 
-                                            onChange={inputA22} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A23" 
-                                            onChange={inputA23} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A31" 
-                                            onChange={inputA31} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A32" 
-                                            onChange={inputA32} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A33" 
-                                            onChange={inputA33} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
+                                    <div>
+                                        {[1,2,3].map(i => (
+                                        <div key={i} style={{display:"grid",gridTemplateColumns:"repeat(3, 1fr)"}}>
+                                            {[1,2,3].map(j => (
+                                            <input
+                                                key={j}
+                                                type="number"
+                                                id={`A${i}${j}`}
+                                                onChange={(e) => eval(`setA${i}${j}(e.target.value)`) }
+                                                value={eval(`A${i}${j}`)}
+                                                style={{width:"65px", margin:"10px", display: "inline-block"}}
+                                                className="form-control"
+                                            />
+                                            ))}
+                                        </div>
+                                        ))}
                                     </div>
                                     <div style={{paddingTop:"75px",paddingLeft:"20px"}}><Form.Label>B = </Form.Label></div>
                                     <div style={{display:"grid"}}>
                                         <input type="number" id="B11" 
-                                            onChange={inputB11} 
+                                            onChange={inputB11}
+                                            value = {B11} 
                                             style={{width:"65px", margin:"10px",display: "inline-block"}} 
                                             className="form-control">
                                         </input>
                                         <input type="number" id="B21" 
-                                            onChange={inputB21} 
+                                            onChange={inputB21}
+                                            value = {B21} 
                                             style={{width:"65px", margin:"10px",display: "inline-block"}} 
                                             className="form-control">
                                         </input>
                                         <input type="number" id="B31" 
-                                            onChange={inputB31} 
+                                            onChange={inputB31}
+                                            value = {B31} 
                                             style={{width:"65px", margin:"10px",display: "inline-block"}} 
                                             className="form-control">
                                         </input>
                                     </div>
-                                    <div style={{paddingTop:"75px",paddingLeft:"20px"}}><Form.Label>Initail x1,x2,x3 = 0 </Form.Label></div>
                                 </div>
                             )
                             } else if (Sizematrix == 4){
                             return (
                                 <div style={{display:"flex",justifyContent:"center"}}>
                                     <div style={{paddingTop:"105px"}}><Form.Label>A = </Form.Label></div>
-                                    <div style={{display:"grid",gridTemplateColumns:"repeat(4, 1fr)"}}>
-                                        <input type="number" id="A11" 
-                                            onChange={inputA11} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A12" 
-                                            onChange={inputA12} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A13" 
-                                            onChange={inputA13} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A14" 
-                                            onChange={inputA14} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A21" 
-                                            onChange={inputA21} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A22" 
-                                            onChange={inputA22} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A23" 
-                                            onChange={inputA23} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A24" 
-                                            onChange={inputA24} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A31" 
-                                            onChange={inputA31} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A32" 
-                                            onChange={inputA32} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A33" 
-                                            onChange={inputA33} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A34" 
-                                            onChange={inputA34} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A41" 
-                                            onChange={inputA41} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A42" 
-                                            onChange={inputA42} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A43" 
-                                            onChange={inputA43} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
-                                        <input type="number" id="A44" 
-                                            onChange={inputA44} 
-                                            style={{width:"65px", margin:"10px",display: "inline-block"}} 
-                                            className="form-control">
-                                        </input>
+                                    <div>
+                                        {[1,2,3,4].map(i => (
+                                        <div key={i} style={{display:"grid",gridTemplateColumns:"repeat(4, 1fr)"}}>
+                                            {[1,2,3,4].map(j => (
+                                            <input
+                                                key={j}
+                                                type="number"
+                                                id={`A${i}${j}`}
+                                                onChange={(e) => eval(`setA${i}${j}(e.target.value)`) }
+                                                value={eval(`A${i}${j}`)}
+                                                style={{width:"65px", margin:"10px", display: "inline-block"}}
+                                                className="form-control"
+                                            />
+                                            ))}
+                                        </div>
+                                        ))}
                                     </div>
                                     <div style={{paddingTop:"105px",paddingLeft:"20px"}}><Form.Label>B = </Form.Label></div>
                                     <div style={{display:"grid"}}>
                                         <input type="number" id="B11" 
                                             onChange={inputB11} 
+                                            value = {B11}
                                             style={{width:"65px", margin:"10px",display: "inline-block"}} 
                                             className="form-control">
                                         </input>
                                         <input type="number" id="B21" 
                                             onChange={inputB21} 
+                                            value = {B21}
                                             style={{width:"65px", margin:"10px",display: "inline-block"}} 
                                             className="form-control">
                                         </input>
                                         <input type="number" id="B31" 
                                             onChange={inputB31} 
+                                            value = {B31}
                                             style={{width:"65px", margin:"10px",display: "inline-block"}} 
                                             className="form-control">
                                         </input>
                                         <input type="number" id="B41" 
                                             onChange={inputB41} 
+                                            value = {B41}
                                             style={{width:"65px", margin:"10px",display: "inline-block"}} 
                                             className="form-control">
                                         </input>
                                     </div>
-                                    <div style={{paddingTop:"105px",paddingLeft:"20px"}}><Form.Label>Initail x1,x2,x3,x4 = 0 </Form.Label></div>
                                 </div>
                             )
                             }
                         })()}
                         </div>
                     </Form.Group>
-                    <Button variant="dark" style={{ margin: '0 auto', display: 'block' }} onClick={calculateLinear}>
-                        Calculate
-                    </Button>
+                    <div style={{textAlign:"center",  display: 'block' }}>
+                        <Button variant="dark" style={{margin:"10px" }} onClick={calculateLinear}>
+                            Calculate
+                        </Button>
+                        <Button variant="dark" style={{margin:"10px" }} onClick={getEqution}>
+                            Example Solution
+                        </Button>
+                        <Dialog
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            <DialogTitle id="alert-dialog-title">
+                                <h2>{popupdata.title}</h2>
+                            </DialogTitle>
+                            <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                            <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+                            <h5 style={{padding:"10px"}}>Matrix A : </h5>
+                            <table>
+                                <tbody style={{borderLeft: "1px solid black", borderRight: "1px solid black"}}>
+                                {Ma.map((row, rowIndex) => (
+                                    <tr key={rowIndex}>
+                                        {row.map((cell, cellIndex) => (
+                                        <td style={{padding:"10px"}} key={cellIndex}>{cell}</td>
+                                        ))}
+                                    </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+                            <h5 style={{padding:"10px"}}>Matrix B : </h5>
+                            <table>
+                                <tbody style={{borderLeft: "1px solid black", borderRight: "1px solid black"}}>
+                                {Mb.map((row, rowIndex) => (
+                                    <tr key={rowIndex}>
+                                        <td style={{padding:"10px"}} >{row}</td>
+                                    </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                            </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                            <Button onClick={handleClose}>OK</Button>
+                            </DialogActions>
+                        </Dialog>
+                    </div>
                 </Form>
                 <br></br>
-                <h5 style={{textAlign:"center"}}>X = {formattedValueX}</h5>
+                <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+                <h5 style={{padding:"10px"}}>X = </h5>
+                    <h5>
+                        <table>
+                            <tbody style={{borderLeft: "1px solid black", borderRight: "1px solid black"}}>
+                            {ValueX.map((row, rowIndex) => (
+                                <tr key={rowIndex}>
+                                    <td style={{padding:"10px"}} >{row.toFixed(4)}</td>
+                                </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </h5>
+                </div>
+                <br></br>
+                <Button variant="dark" style={{ margin: '0 auto', display: 'block' }} onClick={getCheck}>
+                        Check Ax = B
+                </Button>
+                <br></br>
+                <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+                <h5 style={{padding:"10px"}}>B =</h5>
+                    <h5>
+                        <table>
+                            <tbody style={{borderLeft: "1px solid black", borderRight: "1px solid black"}}>
+                            {checkValue.map((row, rowIndex) => (
+                                <tr key={rowIndex}>
+                                    <td style={{padding:"10px"}} >{row.toFixed(4)}</td>
+                                </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </h5>
+                </div>
                 <Container>
                 {html}
                 </Container>
