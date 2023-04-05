@@ -14,6 +14,7 @@
     "cholesky-solve": "^0.2.1",
     "cholesky-tools": "^0.1.7",
     "conjugate-gradient": "^0.0.2",
+    "json-server": "^0.17.3",
     "mathjs": "^11.5.1",
     "ml-matrix": "^6.10.4",
     "plotly.js": "^2.18.1",
@@ -24,6 +25,10 @@
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.3.4",
     "react-scripts": "^5.0.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui": "^4.18.2",
+    "swagger-ui-express": "^4.6.2",
+    "swagger-ui-react": "^4.18.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

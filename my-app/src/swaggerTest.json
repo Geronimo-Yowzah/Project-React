@@ -1,0 +1,90 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "My Swagger Numer",
+      "description": "Test API"
+    },
+    "basePath": "/",
+    "schemes": [
+      "http"
+    ],
+    "tags": [
+      {
+        "name": "rootEqation",
+        "description": "rootEqation"
+      },
+      {
+        "name": "linearEqation",
+        "description": "linearEqation"
+      }
+    ],
+    "paths": {
+      "/rootEqation": {
+        "get": {
+          "tags": [
+            "rootEqation"
+          ],
+          "summary": "Get all Eqation",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/rootEqation"
+                }
+              }
+            }
+          }
+        }
+      },
+      "/linearEqation": {
+        "get": {
+          "tags": [
+            "linearEqation"
+          ],
+          "summary": "Get all Eqation",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/linearEqation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "rootEqation": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "Equation": {
+            "type": "string"
+          }
+        }
+      },
+      "linearEqation": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "MA": {
+            "type": "array"
+          },
+          "MB": {
+            "type": "array"
+          }
+        }
+      }
+    }
+  }
+  
