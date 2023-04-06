@@ -7,8 +7,17 @@ const server = jsonServer.create();
 const router = jsonServer.router('../db.json');
 const middlewares = jsonServer.defaults();
 
+const validateApiKey = (req, res, next) => {
+  const apiKey = req.get('Authorization');
+  if (!apiKey || apiKey !== 'Bearer geronimo') {
+    return res.status(401).json({ message: 'Invalid API key' });
+  }
+  next();
+};
+
 server.use(middlewares);
 server.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+server.use(validateApiKey); // Add custom middleware function here
 server.use(router);
 
 server.listen(3001, () => {

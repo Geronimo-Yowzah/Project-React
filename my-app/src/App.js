@@ -17,7 +17,6 @@ import Cholesky from './LinearEquation/Cholesky';
 import Jacobi from './LinearEquation/Jacobi';
 import GaussSeidel from './LinearEquation/GaussSeidel';
 import Conjugate from './LinearEquation/Conjugate';
-import Swagger from './SwaggerTest';
 
 
 function App() {
@@ -40,7 +39,6 @@ function App() {
         <Route path='/Jacobi' component={() => <Jacobi/>}/>
         <Route path='/GaussSeidel' component={() => <GaussSeidel/>}/>
         <Route path='/Conjugate' component={() => <Conjugate/>}/>
-        <Route path='/Swagger' component={() => <Swagger/>}/>
       </main>
     </BrowserRouter>
     
