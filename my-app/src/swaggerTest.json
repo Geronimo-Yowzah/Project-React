@@ -39,6 +39,33 @@
           }
         }
       },
+      "/rootEqation/?title={title}": {
+        "get": {
+          "tags": [
+            "rootEqation/?title={title}"
+          ],
+          "summary": "Get rootEqation by title",
+          "parameters": [
+            {
+              "name": "title",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "schema": {
+                "$ref": "#/definitions/rootEqation"
+              }
+            },
+            "404": {
+              "description": "User not found"
+            }
+          }
+        }
+      },
       "/linearEqation": {
         "get": {
           "tags": [
