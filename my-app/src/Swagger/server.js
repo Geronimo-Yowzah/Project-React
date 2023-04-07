@@ -1,10 +1,10 @@
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swaggerTest.json');
+const swaggerDocument = require('../swaggerTest.json');
 const jsonServer = require('json-server');
 
 const server = jsonServer.create();
-const router = jsonServer.router('../db.json');
+const router = jsonServer.router('../../db.json');
 const middlewares = jsonServer.defaults();
 const key = "Bearer geronimo"
 
