@@ -51,8 +51,10 @@ const head =  () => {
             <NavDropdown.Divider />
             <NavDropdown.Item href="/Conjugate">Conjugate Gradient Methods</NavDropdown.Item>
           </NavDropdown>
-          <Nav.Link href="http://localhost:3001/api-docs">Swagger</Nav.Link>
         </Nav>
+        <Nav className="justify-content-end flex-grow-1 pe-3">
+            <Nav.Link href="http://localhost:3001/api-docs">Swagger</Nav.Link>
+          </Nav>
       </Navbar.Collapse>
     </Container>
   </Navbar>
