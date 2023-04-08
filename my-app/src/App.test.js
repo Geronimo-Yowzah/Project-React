@@ -1,8 +1,42 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { fireEvent, render, screen } from '@testing-library/react';
+import Bisection from "./RootEquation/Bisection";
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
+test('renders Bisection Methods', () => {
+  render(<Bisection />);
+  const linkElement = screen.getByText(/Bisection Methods/i);
   expect(linkElement).toBeInTheDocument();
+});
+
+
+test('Input Function, XL ,XR is Default' , () =>{
+  render(<Bisection />);
+
+  const calButton = screen.getByText(/Calculate/);
+  fireEvent.click(calButton);
+
+  const defaultanswer = screen.getByText(/0.000000/);
+  expect(defaultanswer).toBeInTheDocument();
+});
+
+
+test('Input Function, XL ,XR is Not empty', ()=>{
+  render(<Bisection />);
+
+  const inputFx = screen.getByTestId('equation');
+  fireEvent.change(inputFx,{target: {value: '(x^4)-13'}});
+  expect(inputFx.value).toBe('(x^4)-13');
+
+  const inputXl = screen.getByTestId('XL');
+  fireEvent.change(inputXl,{target: {value: '0'}});
+  expect(inputXl.value).toBe('0');
+
+  const inputXr = screen.getByTestId('XR');
+  fireEvent.change(inputXr,{target: {value: '5'}});
+  expect(inputXr.value).toBe('5');
+
+  const calButton = screen.getByText(/Calculate/);
+  fireEvent.click(calButton);
+
+  const defaultanswer = screen.getByText(/Answer = 1.89/);
+  expect(defaultanswer).toBeInTheDocument();
 });

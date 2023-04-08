@@ -220,12 +220,12 @@ const Bisection =()=>{
                 <Form >
                     <Form.Group className="mb-3" style={{textAlign:"center"}}>
                         <Form.Label>Input f(x)</Form.Label>
-                        <input type="text" id="equation" value={Equation} onChange={inputEquation} style={{width:"20%", margin:"15px",display: "inline-block"}} className="form-control"></input>
+                        <input type="text" id="equation" data-testid="equation" value={Equation} onChange={inputEquation} style={{width:"20%", margin:"15px",display: "inline-block"}} className="form-control"></input>
                         <br></br>
                         <Form.Label>Input XL</Form.Label>
-                        <input type="number" id="XL" value={XL} onChange={inputXL} style={{width:"20%", margin:"15px",display: "inline-block"}} className="form-control"></input>
+                        <input type="number" id="XL" data-testid="XL" value={XL} onChange={inputXL} style={{width:"20%", margin:"15px",display: "inline-block"}} className="form-control"></input>
                         <Form.Label>Input XR</Form.Label>
-                        <input type="number" id="XR" value={XR} onChange={inputXR} style={{width:"20%", margin:"15px",display: "inline-block"}} className="form-control"></input>
+                        <input type="number" id="XR" data-testid="XR" value={XR} onChange={inputXR} style={{width:"20%", margin:"15px",display: "inline-block"}} className="form-control"></input>
                     </Form.Group>
                     <div style={{textAlign:"center",  display: 'block' }}>
                         <Button variant="dark" style={{margin:"10px" }} onClick={calculateRoot}>
