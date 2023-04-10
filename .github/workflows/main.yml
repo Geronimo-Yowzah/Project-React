@@ -1,0 +1,22 @@
+name: CI docker
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 14
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14'
+    - name: Build Docker image
+      run: |
+        cd my-app
+        docker build -t react:1.0 .
+    - name: Test Docker container
+      run: |
+        cd my-app
+        docker run react:1.0 npm test
