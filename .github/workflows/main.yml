@@ -1,25 +1,22 @@
-name: CI/CD Pipeline
+name: CI docker
 
-on:
-  push:
-    branches:
-      - master
+on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      
-    - name: Build Docker image
-      uses: docker/build-push-action@v2
+    - uses: actions/checkout@v2
+    - name: Use Node.js 14.x
+      uses: actions/setup-node@v1
       with:
-        context: my-app/src
-        dockerfile: Dockerfile
-        push: false
-        tags: react-image:latest
-      
-    - name: Test with Docker
-      run: docker run --rm react-image npm test
+        node-version: '14.x'
+    - name: Build Docker image
+      run: |
+        cd my-app
+        docker build -t my-image:1.0 .
+    - name: Test Docker container
+      run: |
+        cd my-app
+        docker run my-image:1.0 npm test
