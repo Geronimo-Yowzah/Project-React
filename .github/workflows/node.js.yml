@@ -23,10 +23,10 @@ jobs:
         cache: 'npm'
     - name: install module
       run: |
-        cd src
+        cd my-app
         npm i
     - name: run test
       run: |
-       cd src
+       cd my-app
        npm test
       
