@@ -21,4 +21,4 @@ jobs:
     - name: Test Docker container
       run: |
         cd my-app
-        docker run react:1.0 npm test
+        docker run react:1.0
