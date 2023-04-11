@@ -21,5 +21,5 @@ jobs:
     - name: Test Docker container
       run: |
         cd my-app
-        docker run --rm react:1.0
-        docker stop react
+        docker run -d --name my-react react:1.0
+        docker stop my-react
