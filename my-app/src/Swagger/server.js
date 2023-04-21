@@ -4,9 +4,9 @@ const swaggerDocument = require('./swaggerTest.json');
 const jsonServer = require('json-server');
 
 const server = jsonServer.create();
-const router = jsonServer.router('./db.json');
+const router = jsonServer.router('../../db.json');
 const server2 = jsonServer.create();
-const router2 = jsonServer.router('./db.json');
+const router2 = jsonServer.router('../../db.json');
 
 const middlewares = jsonServer.defaults();
 const key = "Bearer geronimo"
