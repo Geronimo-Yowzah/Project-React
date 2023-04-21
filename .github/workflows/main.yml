@@ -25,5 +25,8 @@ jobs:
     - name: Test Docker compose
       run: |
         cd my-app/src/Swagger
-        docker-compose up
+        docker-compose down
+    - name: Down Docker compose
+      run: |
+        cd my-app/src/Swagger
         docker-compose down
