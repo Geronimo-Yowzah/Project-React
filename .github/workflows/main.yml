@@ -26,4 +26,4 @@ jobs:
       run: |
         cd my-app/src/Swagger
         docker-compose up
-        docker-compose stop
+        docker-compose down
