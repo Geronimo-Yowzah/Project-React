@@ -17,9 +17,13 @@ jobs:
     - name: Build Docker image
       run: |
         cd my-app
-        docker build -t react:1.0 .
-    - name: Test Docker container
+        docker build -t react-image .
+    - name: Build Docker image server
       run: |
-        cd my-app
-        docker run -d --name my-react react:1.0
-        docker stop my-react
+        cd my-app/src/Swagger
+        docker build -t node-server .     
+    - name: Test Docker compose
+      run: |
+        cd my-app/src/Swagger
+        docker-compose up
+        docker-compose stop
